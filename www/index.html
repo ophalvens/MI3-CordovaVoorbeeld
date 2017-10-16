@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+     
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Mijn Happ</title>
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <link rel="stylesheet" href="css/my-app.css">
+  </head>
+  <body class="theme-green layout-dark">
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <div class="panel-overlay"></div>
+    <div class="panel panel-left panel-reveal">
+      <div class="content-block">
+        <p>Ok, hier heb je ruimte om vanalles te zetten, bvb menu-items</p>
+      </div>
+    </div>
+    
+    <!-- Views-->
+    <div class="views">
+      <!-- Your main view, should have "view-main" class-->
+      <div class="view view-main">
+        
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+          <!-- Start page index -->
+          <div data-page="index" class="page">
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="center sliding">Cordova / F7 test app</div>
+                <div class="right">
+                  <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="toolbar toolbar-bottom">
+              <div class="toolbar-inner"><a href="#index" data-panel="left" class="button link">Home</a><a href="#locatie" class="button link">Locatie</a></div>
+            </div>
+            <div class="page-content">
+              <div class="content-block-title">Cordova / F7 test app</div>
+              <div class="list-block">
+                <ul>
+                    <li><a href="#over" class="item-link">
+                      <div class="item-content">
+                        <div class="item-inner"> 
+                          <div class="item-title">Over</div>
+                        </div>
+                      </div>
+                      </a>
+                    </li>
+                    <li><a href="#locatie" class="item-link">
+                      <div class="item-content">
+                        <div class="item-inner"> 
+                          <div class="item-title">Locatie</div>
+                        </div>
+                      </div>
+                      </a>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+            <!-- Start page over -->
+            <div data-page="over" class="page cached">
+                <div class="navbar">
+                  <div class="navbar-inner">
+                    <div class="center sliding">Cordova / F7 test app</div>
+                    <div class="right">
+                      <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="toolbar toolbar-bottom">
+                  <div class="toolbar-inner"><a href="#index" data-panel="left" class="button link">Home</a><a href="#locatie" class="button link">Locatie</a></div>
+                </div>
+                <div class="page-content">
+                  <div class="content-block-title">Over dit voorbeeld</div>
+                  <div class="content-block">
+                    <div class="content-block-inner">
+                      <p>Dit is een korte app om een aantal functies van Cordova en F7 te demonstreren.</p>
+                      <p>Voor F7 verwijs ik graag naar de lessen van vorig jaar.</p>
+                        <p>Het grootste verschil met vorig jaar, is dat dit voorbeeld slechts 1 html pagina gebruikt.</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <!-- Start page locatie -->
+            <div data-page="locatie" class="page cached">
+                <div class="navbar">
+                  <div class="navbar-inner">
+                    <div class="center sliding">Cordova / F7 test app</div>
+                    <div class="right">
+                      <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="toolbar toolbar-bottom">
+                  <div class="toolbar-inner"><a href="#index" data-panel="left" class="button link">Home</a><a href="#over" class="button link">Over</a></div>
+                </div>
+                <div class="page-content">
+                  <div class="content-block-title">Locatie</div>
+                  <div class="content-block">
+                    <div class="content-block-inner">
+                        <p><a href="#" id="btnLocatie" class="button button-round button-fill button-raised">Haal de locatie op</a></p>
+                        <p id="locatieResultaat"></p>
+                        
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        
+      </div>
+    </div>
+    <!-- Path to Cordova library, added at buildtime -->
+    <script type="text/javascript" src="cordova.js"></script>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/my-app.js"></script>
+  </body>
+</html>

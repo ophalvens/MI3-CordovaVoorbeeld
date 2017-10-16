@@ -84,6 +84,7 @@ function showPosition(position) {
     var tText = "";
     tText += "latitude: " + position.coords.latitude +"</br>";
 
+    
     let esText = `Latitude: ${position.coords.latitude}<br>Longitude: ${position.coords.longitude}<br>Accuracy: ${position.coords.accuracy}m.<br>Timestamp: ${new Date(position.timestamp)}<br>`;
 
     $$("#locatieResultaat").html(esText);

@@ -100,7 +100,7 @@ function positionError(error) {
     switch(error.code){
         case 0:
             // unknown error
-             myApp.alert('Onbekend probleem bij het bepalen van je positie. Zorg er voor dat de positiebepaling van je toestel actief is.', 'Positie probleem');
+            myApp.alert('Onbekend probleem bij het bepalen van je positie. Zorg er voor dat de positiebepaling van je toestel actief is.', 'Positie probleem');
             break;
         case 1:
             // permission denied
@@ -115,4 +115,4 @@ function positionError(error) {
             myApp.alert('Het duurt te lang om je positie te vinden. Zit je in een tunnel? Of zit je nog in de school? Op een heel aantal toestellen kan de positie sneller bepaald worden als je ook je wifi aanzet.', 'Positie timeout');
     }
     
-  };
+  }

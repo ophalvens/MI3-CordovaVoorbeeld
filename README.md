@@ -26,6 +26,8 @@ Voeg een plugin toe (*cordova-plugin-geolocation* in dit voorbeeld) :
 ```
 cordova plugin add cordova-plugin-geolocation
 ```
+**Opgelet** de plugin van dit voorbeeld is nodig voor een deel van dit project (zie les 4).
+
 Je project builden en laten starten in de *android* emulator :
 ```
 cordova emulate android

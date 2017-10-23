@@ -5,7 +5,7 @@ Dit het voorbeeld van les 5.
 
 Download deze branch of fork de repository om te starten.
 
-Om dit voorbeeld volledig te begrijpen, zal je ook het php bestand testDB.php moeten bekijken.
+Om dit voorbeeld volledig te begrijpen, zal je ook het php bestand testdb.php moeten bekijken.
 Dat is het bestand dat via Ajax aangeroepen wordt.
 
 Let op : plaats geen php bestanden in je Cordova app.

@@ -5,8 +5,5 @@
     $dbname     = "xxxxxxxxxxxxx"; // vervang dit door de naam van de databank die je van je hosting firma hebt ontvangen
     
     // Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_connect_error());
-
-    
-   
+$conn = mysqli_connect($servername, $username, $password, $dbname) or die('{"error":"Connection failed","status":"fail"}');   
 ?>

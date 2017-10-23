@@ -4,7 +4,6 @@ header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
-require "dbcon.php";
 
 // de vars ophalen die via POST meegestuurd zijn
 // $_POST werkt niet als de data via Volley gestuurd is :-(
@@ -63,83 +62,138 @@ if (isset($id) || isset($table) || isset($bewerking)) {
 
     } else {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-           // die('{"POSTed":' . json_encode($_POST) . ',"postvars":'. json_encode($postvars) .'}');
+            //die('{"POSTed":' . json_encode($_POST) . ',"postvars":'. json_encode($postvars) .'}');
         } else {
-            die('{"error":"Geen POST"}');
+            die('{"error":"Geen POST","status":"fail"}');
         }
 
     }
 
 }
 
-/*if (isset($_POST['id'])) {
-    $id = $_POST['id'];
-} else {
-    $id = null;
-}*/
-
 if (isset($bewerking) && isset($table)) {
-    $t = $table;
-    if($t != 'producten' && $t != 'categorieen'){
-        die('{"error":"forbidden table"}');
+    if($table !== 'producten' && $table !== 'categorieen'){
+        // table mag enkel 1 van deze 2 zijn
+        die('{"error":"wrong table","status":"fail"}');
     }
 } else {
-    die('{"error":"missing data","table":"'. $table. '", "bewerking":"' . $bewerking . '"}');
+    die('{"error":"missing data","table":"'. $table. '", "bewerking":"' . $bewerking . '","status":"fail"}');
 }
 
-
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+// de DB connectie leggen
+require "dbcon.php";
 
 // Check connection
 if (!$conn) {
-    die(json_encode("Connection failed: " . mysqli_connect_error()));
+    die('{"error":"Connection failed","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 } else {
     if ($bewerking == "get") {
-        // vraag de data op
-        $result = $conn -> query($id == null ? "SELECT * FROM $t" : "SELECT * FROM $t where PR_ID = $id");
+        // Haal de lijst met producten of categorieën op.
+        // Een verbetering voor deze bewerking, zou het uitsplitsen zijn van 'get' naar:
+        // - getAll
+        // - getOne
+        // Dan moet je niet meer apart testen op $id 
+        if($id == null){
+            // prepare statement
+            if(!($stmt = $conn -> prepare("SELECT * FROM $table"))){
+                die('{"error":"Prepared Statement failed","errNo":"' . json_encode($conn -> errno) .'",mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+            }
+        } else {
+            // prepare statement
+            if(!($stmt = $conn -> prepare("SELECT * FROM $table where PR_ID = ?"))){
+                die('{"error":"Prepared Statement failed","errNo":"' . json_encode($conn -> errno) .'",mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+            }
+        }
+
+        if($id !== null){
+            // bind parameters
+            // s staat voor string
+            // i staat voor integer
+            // d staat voor double
+            // b staat voor blob
+            if(!$stmt -> bind_param("i", $id)){
+                die('{"error":"Prepared Statement bind failed","errNo":"' . json_encode($conn -> errno) .'",mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+            }
+        }
+        if(!$stmt -> execute()){
+            die('{"error":"Prepared Statement execute failed","errNo":"' . json_encode($conn -> errno) .'",mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+        }
+        $result = $stmt->get_result();
 
         // maak van de inhoud van deze result een json object waarvan
         // ook in android de juiste gegeventypes herkend worden
         $return = getJsonObjFromResult($result);
-
         // maak geheugenresources vrij :
         mysqli_free_result($result);
-
+        // sluit het prepared statement
+        $stmt -> close();
+        // return het resultaat
         die($return);
 
     } elseif ($bewerking == "delete") {
         // verwijder data
-        if ($conn -> query("delete FROM producten where PR_ID = $id") === TRUE) { // FROM $t
-            die(json_encode("Record deleted successfully"));
-        } else {
-            die(json_encode("Error deleting record: " . $conn -> error));
+        if ($id === null) {
+            die('{"error":"missing data","status":"fail"}');
         }
-        //echo "$id zou moeten verwijderd zijn uit $t";
+        // prepare statement
+        if(!($stmt = $conn -> prepare("delete FROM $table where PR_ID = ?"))){
+            die('{"error":"Prepared Statement failed","errNo":"' . json_encode($conn -> errno) .'",mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+        }
+        // bind parameters
+        if(!$stmt -> bind_param("i", $id)){
+            die('{"error":"Prepared Statement bind failed","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+        }
+        // execute statement
+        if(!$stmt-> execute()){
+            // delete failed
+            $stmt -> close();
+            die('{"error":"Prepared Statement failed","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+        }
+        // record successfully deleted
+        $stmt -> close();
+        die('{"data":"ok","message":"Record deleted successfully","status":"ok"}');
         
     } elseif ($bewerking == "add") {
+        $PR_naam = null;
+        $PR_CT_ID = null;
+        $prijs = null;
         if (isset($_POST['PR_naam']) && isset($_POST['PR_CT_ID'])
         && isset($_POST['prijs'])) {
-            // hier MOET je controle plaatsen om o.a. SQL injection 
-            // te voorkomen.
-            $PR_naam = $_POST['PR_naam'];
+            // hier kan je extra controle plaatsen om ongewenste input te voorkomen
+            $PR_naam = htmlentities($_POST['PR_naam']);
+            
             $PR_CT_ID = $_POST['PR_CT_ID'];
             $prijs = $_POST['prijs'];
+            if($PR_naam === "" || $PR_CT_ID === "" || $prijs === "") {
+                die('{"error":"missing data","status":"fail"}');
+            }
         } else {
-            die(json_encode("missing data"));
+            die('{"error":"missing data","status":"fail"}');
         }
-
         // product toevoegen
-
-       
-        if ($conn -> query("insert into producten (PR_naam, PR_CT_ID, prijs) values('"
-        .$PR_naam."','".$PRCT_ID."','".$prijs."')") === TRUE) { // into $t
-            die(json_encode("Record added successfully"));
-        } else {
-            die(json_encode("Error adding record: " . $conn -> error));
+        if(!$stmt = $conn->prepare("insert into producten (PR_naam, PR_CT_ID, prijs) values(?,?,?)")){
+            die('{"error":"Prepared Statement failed","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
         }
+        // bind parameters
+        // s staat voor string
+        // i staat voor integer
+        // d staat voor double
+        // b staat voor blob
+        // "sid" staat dus voor string, integer, double
+        if(!$stmt -> bind_param("sid", $PR_naam, $PR_CT_ID, $prijs)){
+            die('{"error":"Prepared Statement bind failed","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+        }
+        if(!$stmt -> execute()) {
+            // add failed
+            $stmt -> close();
+            die('{"error":"Prepared Statement failed","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
+        }
+        // added
+        $stmt -> close();
+        die('{"data":"ok","message":"Record added successfully","status":"ok"}');
+
     } else {
-        die(json_encode("Oops, hier zou ik normaal niet mogen komen..."));
+        die(json_encode('{"error":"Unknown argument","arg":"' . json_encode($bewerking) .'","status":"fail"}'));
     }
 
 }
@@ -179,6 +233,6 @@ function getJsonObjFromResult(&$result){
     }
 
     // geef een json object terug
-    return '{"data":'.json_encode($fixed).'}';
+    return '{"data":'.json_encode($fixed).',"status":"ok"}';
 }
 ?>

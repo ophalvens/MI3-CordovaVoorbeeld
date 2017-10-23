@@ -30,7 +30,7 @@ Je project builden en laten starten in de *android* emulator :
 ```
 cordova emulate android
 ```
-Enkel caveats :
+Enkele caveats :
 * Test eerst of je emulator wel kan opstarten
 * Op sommige versies van je emulator moet je
   * in het virtuele toestel de developers options unlocken
@@ -41,7 +41,7 @@ Je project builden en laten starten op een met de kabel verbonden android toeste
 ```
 cordova run android
 ```  
-Enkel caveats :
+Enkele caveats :
 * Test eerst of je jouw toestel wel ziet via het commando `adb devices -l`
 * Zet USB debugging aan op jouw gsm (of tablet)
 * Geef toestemming aan jouw PC/Laptop wanneer daar om gevraagd wordt

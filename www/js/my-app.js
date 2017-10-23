@@ -70,7 +70,8 @@ function getLocation() {
             positionError, 
             { 
                 enableHighAccuracy: true,
-                maximumAge: 10 * 1000}
+                maximumAge: 10 * 1000
+            }
         );
         
     } else {

@@ -63,7 +63,7 @@ if (isset($id) || isset($table) || isset($bewerking)) {
 
     } else {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            die('{"POSTed":' . json_encode($_POST) . ',"postvars":'. json_encode($postvars) .'}');
+           // die('{"POSTed":' . json_encode($_POST) . ',"postvars":'. json_encode($postvars) .'}');
         } else {
             die('{"error":"Geen POST"}');
         }

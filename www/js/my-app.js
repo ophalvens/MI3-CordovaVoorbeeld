@@ -108,15 +108,121 @@ function positionError(error) {
         case 0:
             // unknown error
              myApp.alert('Onbekend probleem bij het bepalen van je positie. Zorg er voor dat de positiebepaling van je toestel actief is.', 'Positie probleem');
+            break;
         case 1:
             // permission denied
             myApp.alert('Het spijt me, maar ik ga je moeten blijven pesten als je geen toestemming geeft om je positie te zien. Als je wilt, kan je de pagina herladen en eventueel de geschiedenis van je browser wissen. Het laatste uur is meer dan voldoende. <b>iPhone</b> : zorg er voor dat je locatie toestemming in het algemeen EN locatie toestemming aan Safari geeft.', 'Positie toelating probleem');
+            break;
         case 2:
             // position unavailable (error response from location provider)
             myApp.alert('Je positie is niet beschikbaar. Zorg er voor dat de positiebepaling van je toestel actief is.', 'Positie niet beschikbaar');
+            break;
         case 3:
             // timed out
             myApp.alert('Het duurt te lang om je positie te vinden. Zit je in een tunnel? Of zit je nog in de school? Op een heel aantal toestellen kan de positie sneller bepaald worden als je ook je wifi aanzet.', 'Positie timeout');
     }
     
-  };
+  }
+
+// ---------- uitbreiding voorbeeld les 5 ---------------- //
+
+
+function getList() {
+    // de data opvragen van de andere server
+
+    var data = {};
+    data.table = "producten";
+    data.bewerking = "get";
+    // opgelet : niet doorsturen als JSON :
+    // CORS & json data --> preflight == problemen!
+    // var JSONData = JSON.stringify(data);
+    // Daarom ook geen dataType : 'json' zetten ...
+
+    $$.ajax({
+        type : 'POST',
+        url : 'http://ophalvens.net/mi3/testdb.php',
+        crossDomain : true,
+        data : data,
+        withCredentials : false,
+        success : function(responseData, textStatus, jqXHR) {
+            //var value = responseData.length;
+            var list = (JSON.parse(responseData)).data;
+            var tlines = "";
+            var i;
+            for ( i = 0; i < list.length; i++) {
+                tlines += "<button onClick='sendAjax(" + list[i].PR_ID + ");'>Verwijder</button> " + list[i].PR_naam + " - " + list[i].prijs + "<br>";
+            }
+
+            $$("#pList").html(tlines);
+        },
+        error : function(responseData, textStatus, errorThrown) {
+            $$("#resultaat").html('POST failed. :' + errorThrown);
+        }
+    });
+
+}
+
+function sendAjax(id) {
+    // ajax call opzetten om een item te verwijderen.
+    var data = {};
+    data.id = id;
+    data.table = "producten";
+    data.bewerking = "delete";
+    // opgelet : niet doorsturen als JSON :
+    // CORS & json data --> preflight == problemen!
+    // var JSONData = JSON.stringify(data);
+    // Daarom ook geen dataType : 'json' zetten ...
+
+    $$.ajax({
+        type : 'POST',
+        url : 'http://ophalvens.net/mi3/testdb.php',
+        crossDomain : true,
+        data : data,
+        withCredentials : false,
+        success : function(responseData, textStatus, jqXHR) {
+            //var value = responseData.length;
+            $$("#resultaat").html("ok!:" + responseData);
+            // refresh de lijst
+            getList();
+        },
+        error : function(responseData, textStatus, errorThrown) {
+            $$("#resultaat").html('POST failed. :' + errorThrown);
+        }
+    });
+
+}
+
+function voegToe(){
+    var data = {};
+    data.table = "producten";
+    data.bewerking = "add";
+    data.PR_naam = $$("#PR_naam").val();
+    data.prijs = $$("#prijs").val();
+    // cat zal fruit of groente zijn
+    var cat = $$('input[name=categorie]:checked').val();
+    // in de databank is fruit 1, groente 2
+    data.PR_CT_ID = (cat == "fruit"?1:2);
+
+    $$.ajax({
+        type : 'POST',
+        url : 'http://ophalvens.net/mi3/testdb.php',
+        crossDomain : true,
+        data : data,
+        withCredentials : false,
+        success : function(responseData, textStatus, jqXHR) {
+            //var value = responseData.length;
+            $$("#resultaat").html("ok!:" + responseData);
+            // refresh de lijst
+            getList();
+        },
+        error : function(responseData, textStatus, errorThrown) {
+            $$("#resultaat").html('POST failed. :' + errorThrown);
+        }
+    });
+
+
+}
+
+myApp.onPageInit('data', function (page) {
+    getList();
+});

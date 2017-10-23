@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
       
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">-->
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+      
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
      
@@ -65,10 +67,18 @@
                       </div>
                       </a>
                     </li>
+                    <li><a href="#data" class="item-link">
+                      <div class="item-content">
+                        <div class="item-inner"> 
+                          <div class="item-title">Werken met data</div>
+                        </div>
+                      </div>
+                      </a>
+                    </li>
                 </ul>
               </div>
             </div>
-          </div>
+            </div>
             <!-- Start page over -->
             <div data-page="over" class="page cached">
                 <div class="navbar">
@@ -117,6 +127,98 @@
                   </div>
                 </div>
             </div>
+            <!-- Start page data -->
+            <div data-page="data" class="page cached">
+                <div class="navbar">
+                  <div class="navbar-inner">
+                    <div class="center sliding">Cordova / F7 test app</div>
+                    <div class="right">
+                      <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="toolbar toolbar-bottom">
+                  <div class="toolbar-inner"><a href="#index" data-panel="left" class="button link">Home</a><a href="#over" class="button link">Over</a></div>
+                </div>
+                <div class="page-content">
+                  <!--<div class="content-block-title">Data</div>-->
+                  <div class="content-block">
+                    <div class="content-block-inner">
+                        
+                        <form id="product">
+                                                            
+                            <label for="PR_naam">Productnaam</label>
+                            <div class="item-input">
+                                <input type="text" id="PR_naam" class="item-input" placeholder="productnaam" style="width:100%">
+                            </div>
+
+                            <label for="prijs">Prijs : </label>
+                            <div class="item-input">
+                                <input type="number" id="prijs" placeholder="Prijs in euro">
+                            </div>
+
+                            <div class="list-block">
+                              <ul>
+                                <li>
+                                  <label class="label-radio item-content">
+                                    <input type="radio" name="categorie" value="groente" checked="checked">
+                                    <div class="item-media">
+                                      <i class="icon icon-form-radio"></i>
+                                    </div>
+                                    <div class="item-inner">
+                                      <div class="item-title">Groente</div>
+                                    </div>
+                                  </label>
+                                </li>
+                                <li>
+                                  <label class="label-radio item-content">
+                                    <input type="radio" name="categorie" value="fruit">
+                                    <div class="item-media">
+                                      <i class="icon icon-form-radio"></i>
+                                    </div>
+                                    <div class="item-inner">
+                                      <div class="item-title">Fruit</div>
+                                    </div>
+                                  </label>
+                                </li>
+                              </ul>
+                            </div>    
+                            
+                            <a href="#" onclick="voegToe();" class="button button-round button-fill button-raised">Voeg product toe</a>
+                            
+                        </form>
+                        <div id="resultaat" class="content-block-inner"></div>
+                        <div id="pList" class="content-block-inner"></div>
+                        
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <!-- Start page over -->
+            <div data-page="over" class="page cached">
+                <div class="navbar">
+                  <div class="navbar-inner">
+                    <div class="center sliding">Cordova / F7 test app</div>
+                    <div class="right">
+                      <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="toolbar toolbar-bottom">
+                  <div class="toolbar-inner"><a href="#index" data-panel="left" class="button link">Home</a><a href="#locatie" class="button link">Locatie</a></div>
+                </div>
+                <div class="page-content">
+                  <div class="content-block-title">Over dit voorbeeld</div>
+                  <div class="content-block">
+                    <div class="content-block-inner">
+                      <p>Dit is een korte app om een aantal functies van Cordova en F7 te demonstreren.</p>
+                      <p>Voor F7 verwijs ik graag naar de lessen van vorig jaar.</p>
+                        <p>Het grootste verschil met vorig jaar, is dat dit voorbeeld slechts 1 html pagina gebruikt.</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
         </div>
         
       </div>

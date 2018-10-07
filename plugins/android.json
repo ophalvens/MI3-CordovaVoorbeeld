@@ -1,15 +1,18 @@
 {
-    "prepare_queue": {
-        "installed": [],
-        "uninstalled": []
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "net.ophalvens.hokuspokus"
     },
-    "config_munge": {
-        "files": {}
-    },
-    "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "net.ophalvens.hokuspokus"
-        }
-    },
-    "dependent_plugins": {}
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "net.ophalvens.hokuspokus"
+    }
+  },
+  "dependent_plugins": {}
 }
